@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import connectDB from "./db";
 import { authRoute, myHotelRoute, testRoute, userRoute } from "./routes";
 import "dotenv/config";
@@ -30,6 +30,11 @@ app.use("/api/test", testRoute);
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/my-hotels", myHotelRoute);
+
+// catch-all route for React Router
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "../../frontend/dist", "/index.html"));
+});
 
 const start = async () => {
   const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
