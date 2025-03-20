@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import UserModel from "../models/user";
 import jwt from "jsonwebtoken";
-import { User } from "../shared/types";
+import { UserType } from "../shared/types";
 
 export const signup = async (req: Request, res: Response) => {
   // thanks to mongoose validation on schema level, required fields (firstName, lastName, email, password) are coming - done
@@ -9,7 +9,7 @@ export const signup = async (req: Request, res: Response) => {
   // create a new account - done
   // send token in cookie - done
   try {
-    const { firstName, lastName, email, password }: User = req.body;
+    const { firstName, lastName, email, password }: UserType = req.body;
     const userDoc = await UserModel.findOne({ email });
 
     if (userDoc) {
@@ -17,7 +17,7 @@ export const signup = async (req: Request, res: Response) => {
       return;
     }
 
-    const newUserDoc = new UserModel<User>({
+    const newUserDoc = new UserModel<UserType>({
       firstName,
       lastName,
       email,
@@ -34,7 +34,7 @@ export const signup = async (req: Request, res: Response) => {
     res.cookie("auth_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 60 * 24, //1d,
+      maxAge: 1000 * 60 * 60 * 24, //1d
       // sameSite: "none", //todo: none when publish
     });
     res.status(200).json({ message: "user created" });

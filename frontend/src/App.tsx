@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, Login, NotFoundError, Register } from "./pages";
+import { AddHotel, Home, Login, NotFoundError, Register } from "./pages";
 import Layout from "./layouts/Layout";
+import { useAppContext } from "./contexts/AppContext";
 
 function App() {
+  const { isLoggedIn } = useAppContext();
   return (
-    <BrowserRouter
-      future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
-    >
+    <BrowserRouter>
       <Routes>
         <Route
           path="/"
@@ -33,6 +33,7 @@ function App() {
           }
         />
         <Route
+          // catch all route for 404
           path="*"
           element={
             <Layout>
@@ -40,6 +41,16 @@ function App() {
             </Layout>
           }
         />
+        {isLoggedIn && (
+          <Route
+            path="add-hotel"
+            element={
+              <Layout>
+                <AddHotel />
+              </Layout>
+            }
+          />
+        )}
       </Routes>
     </BrowserRouter>
   );

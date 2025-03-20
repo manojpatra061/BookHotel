@@ -1,7 +1,7 @@
 import { LoginFormInput } from "./pages/Login";
 import { RegisterFormInput } from "./pages/Register";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''; //best-practice : fallback to blank string ('')
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ""; //best-practice : fallback to blank string ('')
 
 export const registerUser = async (newUser: RegisterFormInput) => {
   // send {firstName,lastName,email,password} in post body
@@ -64,5 +64,19 @@ export const logIn = async (user: LoginFormInput) => {
 export const apiTest = async () => {
   const response = await fetch(`${API_BASE_URL}/api/test/try`);
   const data = response.json();
+  return data;
+};
+
+export const addMyHotel = async (hotelFormData: FormData) => {
+  const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+    method: "POST",
+    body: hotelFormData,
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("failed to add hotel");
+  }
+  const data = await response.json();
   return data;
 };

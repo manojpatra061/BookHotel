@@ -3,7 +3,7 @@ import UserModel from "../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import { User } from "../shared/types";
+import { UserType } from "../shared/types";
 
 export const login = async (req: Request, res: Response) => {
   // email, pw come from fend - done
@@ -11,7 +11,7 @@ export const login = async (req: Request, res: Response) => {
   // if correct, create a token and send it in cookie - done
   // success msg - done
 
-  const { email, password }: User = req.body;
+  const { email, password }: UserType = req.body;
   const userDoc = await UserModel.findOne({ email });
 
   if (!userDoc) {

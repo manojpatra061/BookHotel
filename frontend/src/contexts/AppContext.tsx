@@ -10,6 +10,7 @@ export type ToastMessage = {
 type AppContext = {
   showToast: (toastMessage: ToastMessage) => void;
   isLoggedIn: boolean;
+  isLogging: boolean; //to solve: shows 'you need to login' when already logged in at '/add-hotel'
   // for any other props
 };
 
@@ -31,6 +32,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
         },
         // isLoggedIn: !isError, //after logout or no cookie in application, it shows the after login things for few seconds(fetching time)
         isLoggedIn: isPending ? false : isError ? false : true, //solved - keeping it to false when fetching
+        isLogging: isPending,
       }}
     >
       {toast && (

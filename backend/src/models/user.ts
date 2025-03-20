@@ -1,8 +1,8 @@
 import { model, Schema } from "mongoose";
-import { User } from "../shared/types";
+import { UserType } from "../shared/types";
 import bcrypt from "bcryptjs";
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<UserType>({
   firstName: { type: String, required: [true, "firstName is required"] },
   lastName: { type: String, required: [true, "lastName is required"] },
   email: {
@@ -28,6 +28,6 @@ userSchema.pre("save", function (next) {
   next();
 });
 
-const User = model<User>("User", userSchema);
+const User = model<UserType>("user", userSchema);
 
 export default User;
