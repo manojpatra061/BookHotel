@@ -21,10 +21,16 @@ const Header = () => {
                 my bookings
               </Link>
               <Link
-                to="/my-bookings"
+                to="/my-hotels"
                 className="text-blue-800 font-bold bg-white py-2 px-4 text-base hover:bg-gray-300"
               >
                 my hotels
+              </Link>
+              <Link
+                to="/add-hotel"
+                className="text-blue-800 font-bold bg-white py-2 px-4 text-base hover:bg-gray-300"
+              >
+                add hotel
               </Link>
               <LogoutButton />
             </>
