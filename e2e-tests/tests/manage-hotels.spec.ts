@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { link } from "fs";
 import path from "path";
 
 const UI_URL = "http://localhost:4000";
@@ -36,4 +37,25 @@ test("should create a hotel", async ({ page }) => {
     ]);
   await page.getByRole("button", { name: "Create Hotel" }).click();
   await expect(page.getByText("hotel created")).toBeVisible();
+});
+
+test("should display all hotels", async ({ page }) => {
+  await page.goto(`${UI_URL}/my-hotels`);
+  await expect(page.getByRole("heading", { name: "My Hotels" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Hotel O Sunrise" })
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "There are many variations of passages of Lorem Ipsum available"
+    )
+  ).toBeVisible();
+  await expect(page.getByText("Ahmedabad, India").first()).toBeVisible();
+  await expect(page.getByText("All Inclusive").first()).toBeVisible();
+  await expect(page.getByText("999/night").first()).toBeVisible();
+  await expect(page.getByText("2 adults, 2 children").nth(1)).toBeVisible();
+  await expect(page.getByText("4 star rating").first()).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "View Details" }).nth(1)
+  ).toBeVisible();
 });

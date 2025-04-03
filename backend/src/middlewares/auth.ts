@@ -19,7 +19,7 @@ export const verifyToken = async (
   // http-only cookie comes from fend (cookieparser needed) - done
   // check if auth_token cookie exists - done
   // get the payload back from token - done
-  // check if the userId extracted from the token exists in the database or not - done
+  // check if document with the userId extracted from the token exists in the database or not - done
   // add userId in req so the next midware can access - done
   // go to next midware - done
 

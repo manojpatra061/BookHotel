@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { v2 as cloudinary } from "cloudinary";
 import HotelModel from "../models/hotel";
 import { HotelType } from "../shared/types";
+import { StatusCodes } from "http-status-codes";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -31,9 +32,11 @@ export const createHotel = async (req: Request, res: Response) => {
     const newHotelDoc = new HotelModel<HotelType>(newHotel);
     await newHotelDoc.save();
 
-    res.json({ msg: "new hotel created" });
+    res.status(StatusCodes.CREATED).json({ msg: "new hotel created" });
   } catch (error) {
-    res.status(400).json({ msg: "error while creating hotel" });
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "error while creating hotel" });
   }
 };
 
@@ -55,4 +58,47 @@ const uploadImagesToCloudinary = async (
     (uploadedImage) => uploadedImage.secure_url
   );
   return uploadedImageUrls;
+};
+
+export const getAllMyHotels = async (req: Request, res: Response) => {
+  try {
+    // get the userId from req - done
+    // find all hotel documents with the userId from HotelModel (aka hotels collection) - done
+    // return the hotel documents with a success message - done
+    const userId = req.userId;
+    const hotelDocs = await HotelModel.find({ userId });
+    res.status(StatusCodes.OK).json({ msg: "success", myHotels: hotelDocs });
+  } catch (error) {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "error finding hotels..." });
+  }
+};
+
+export const getMyHotel = async (req: Request, res: Response) => {
+  try {
+    // get userId and hotelId from req and req.params -  done
+    // find the document with hotelId and userId matched, from HotelModel aka hotels collection - done
+    // if found send hotel with a success message - done
+    // if not found send - notfound message - done
+    const {
+      userId,
+      params: { hotelId },
+    } = req;
+    const hotelDoc = await HotelModel.findOne<HotelType>({
+      _id: hotelId,
+      userId,
+    });
+    if (!hotelDoc) {
+      throw new Error("no hotel with the hotelId found...");
+    }
+    res.status(StatusCodes.OK).json({ msg: "hotel found", hotel: hotelDoc });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(StatusCodes.BAD_REQUEST).json({ msg: error.message });
+    }
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "something went wrong finding hotel" });
+  }
 };

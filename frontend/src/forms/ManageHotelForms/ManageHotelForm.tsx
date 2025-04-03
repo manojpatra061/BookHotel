@@ -44,7 +44,10 @@ const ManageHotelForm = ({ onSave }: Props) => {
         <FacilitiesSection />
         <GuestsSection />
         <ImagesSection />
-        <button type="submit" className="bg-blue-400">
+        <button
+          type="submit"
+          className="text-sm font-bold bg-blue-800 text-white w-fit p-2 self-end my-2"
+        >
           Create Hotel
         </button>
       </form>

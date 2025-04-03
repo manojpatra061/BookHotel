@@ -1,5 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AddHotel, Home, Login, NotFoundError, Register } from "./pages";
+import {
+  AddHotel,
+  Home,
+  Login,
+  MyHotels,
+  NotFoundError,
+  Register,
+} from "./pages";
 import Layout from "./layouts/Layout";
 import { useAppContext } from "./contexts/AppContext";
 
@@ -42,14 +49,24 @@ function App() {
           }
         />
         {isLoggedIn && (
-          <Route
-            path="add-hotel"
-            element={
-              <Layout>
-                <AddHotel />
-              </Layout>
-            }
-          />
+          <>
+            <Route
+              path="add-hotel"
+              element={
+                <Layout>
+                  <AddHotel />
+                </Layout>
+              }
+            />
+            <Route
+              path="my-hotels"
+              element={
+                <Layout>
+                  <MyHotels />
+                </Layout>
+              }
+            />
+          </>
         )}
       </Routes>
     </BrowserRouter>
