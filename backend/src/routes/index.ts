@@ -1,6 +1,6 @@
 import testRoute from "./test";
 import userRoute from "./user";
 import authRoute from "./auth";
-import myHotelRoute from "./myHotels";
+import myHotelsRoute from "./myHotels";
 
-export { testRoute, userRoute, authRoute, myHotelRoute };
+export { testRoute, userRoute, authRoute, myHotelsRoute };

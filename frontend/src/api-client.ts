@@ -103,3 +103,21 @@ export const fetchHotelById = async (hotelId: string): Promise<HotelType> => {
   const { hotel } = await response.json();
   return hotel;
 };
+
+/**
+ * @param hotelFormData - multipart/form-data aka FormData.
+ */
+export const updateHotelById = async (hotelFormData: FormData) => {
+  // PUT request - for endpoint 'api/my-hotel/:hotelId'
+  const hotelId = hotelFormData.get("_id");
+  const response = await fetch(`${API_BASE_URL}/api/my-hotels/${hotelId}`, {
+    method: "PUT",
+    body: hotelFormData,
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("error updating hotel");
+  }
+  const data = await response.json();
+  return data;
+};

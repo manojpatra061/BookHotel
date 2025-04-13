@@ -18,8 +18,11 @@ const MyHotels = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold">My Hotels</h1>
-      {myHotels.map((hotel) => (
-        <div className="rounded-md border-black border p-4 flex flex-col gap-4 my-4">
+      {myHotels.map((hotel, i) => (
+        <div
+          key={i}
+          className="rounded-md border-black border p-4 flex flex-col gap-4 my-4"
+        >
           <h2 className="text-2xl font-bold">{hotel.name}</h2>
           <div className="text-xl whitespace-pre-line">{hotel.description}</div>
           <div className="grid grid-cols-5 gap-4">
@@ -45,10 +48,10 @@ const MyHotels = () => {
             </div>
           </div>
           <Link
-            to={"/edit-hotel"}
+            to={`/edit-hotel/${hotel._id}`}
             className="text-sm font-bold bg-blue-800 text-white w-fit p-2 self-end"
           >
-            View Details
+            Edit Hotel
           </Link>
         </div>
       ))}

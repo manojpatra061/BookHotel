@@ -1,10 +1,9 @@
 import { test, expect } from "@playwright/test";
-import { link } from "fs";
 import path from "path";
 
 const UI_URL = "http://localhost:4000";
 
-test.beforeEach("should login", async ({ page }) => {
+test.beforeEach(async ({ page }) => {
   await page.goto(UI_URL);
   await page.getByRole("link", { name: "login" }).click();
   await expect(
@@ -18,11 +17,16 @@ test.beforeEach("should login", async ({ page }) => {
 });
 
 test("should create a hotel", async ({ page }) => {
+  const now = new Date();
   await page.goto(`${UI_URL}/add-hotel`);
   await page.locator('[name="name"]').fill("test_name");
   await page.locator('[name="city"]').fill("test_city");
   await page.locator('[name="country"]').fill("test_country");
-  await page.locator('[name="description"]').fill("test_description");
+  await page
+    .locator('[name="description"]')
+    .fill(
+      `test_description - ${now.toDateString()} ${now.toLocaleTimeString()}`
+    );
   await page.locator('[name="pricePerNight"]').fill("123");
   await page.locator('[name="starRating"]').selectOption({ value: "1" });
   await page.getByText("Budget").click();
@@ -39,7 +43,7 @@ test("should create a hotel", async ({ page }) => {
   await expect(page.getByText("hotel created")).toBeVisible();
 });
 
-test("should display all hotels", async ({ page }) => {
+test("should display all my hotels", async ({ page }) => {
   await page.goto(`${UI_URL}/my-hotels`);
   await expect(page.getByRole("heading", { name: "My Hotels" })).toBeVisible();
   await expect(
@@ -56,6 +60,26 @@ test("should display all hotels", async ({ page }) => {
   await expect(page.getByText("2 adults, 2 children").nth(1)).toBeVisible();
   await expect(page.getByText("4 star rating").first()).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "View Details" }).nth(1)
+    page.getByRole("link", { name: "Edit hotel" }).nth(1)
   ).toBeVisible();
+});
+
+test("should edit hotel", async ({ page }) => {
+  await page.goto(`${UI_URL}/my-hotels`);
+  const now = new Date();
+
+  await expect(page.getByText("my hotels")).toBeVisible();
+  await page.getByRole("link", { name: "edit hotel" }).first().click();
+  await expect(page.getByText("edit hotel")).toBeVisible();
+
+  const nameInputElement = page.locator('[name="name"]');
+  const valueToFill = `updated by Playwright on ${now.toLocaleString()}`;
+  await nameInputElement.fill(valueToFill);
+
+  await page.getByRole("button", { name: "update hotel" }).click();
+  await expect(page.getByText("hotel updated")).toBeVisible();
+
+  await page.reload();
+
+  await expect(nameInputElement).toHaveValue(valueToFill);
 });

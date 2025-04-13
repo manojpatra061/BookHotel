@@ -1,11 +1,11 @@
 import { useFormContext } from "react-hook-form";
-import { HotelFormData } from "./ManageHotelForm";
+import { HotelFormInput } from "./ManageHotelForm";
 
 const GuestsSection = () => {
   const {
     register,
     formState: { errors },
-  } = useFormContext<HotelFormData>();
+  } = useFormContext<HotelFormInput>();
   return (
     <div>
       <label>
@@ -16,6 +16,7 @@ const GuestsSection = () => {
           <label>Adults</label>
           <input
             type="number"
+            className="px-2"
             {...register("adultCount", {
               required: "This is a required field",
             })}
@@ -32,6 +33,7 @@ const GuestsSection = () => {
           <label>Children</label>
           <input
             type="number"
+            className="px-2"
             {...register("childCount", {
               required: "This is a required field",
             })}

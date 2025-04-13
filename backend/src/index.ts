@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import connectDB from "./db";
-import { authRoute, myHotelRoute, testRoute, userRoute } from "./routes";
+import { authRoute, myHotelsRoute, testRoute, userRoute } from "./routes";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -29,7 +29,7 @@ app.use(
 app.use("/api/test", testRoute);
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
-app.use("/api/my-hotels", myHotelRoute);
+app.use("/api/my-hotels", myHotelsRoute);
 
 // catch-all route for React Router
 app.get("*", (req: Request, res: Response) => {

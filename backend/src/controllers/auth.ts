@@ -6,10 +6,12 @@ import "dotenv/config";
 import { UserType } from "../shared/types";
 
 export const login = async (req: Request, res: Response) => {
-  // email, pw come from fend - done
-  // check if email and password both are correct - done
-  // if correct, create a token and send it in cookie - done
-  // success msg - done
+  /**
+   * email, pw come from fend - done
+   * check if email and password both are correct - done
+   * if correct, create a token and send it in cookie - done
+   * success msg - done
+   */
 
   const { email, password }: UserType = req.body;
   const userDoc = await UserModel.findOne({ email });
@@ -35,7 +37,7 @@ export const login = async (req: Request, res: Response) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 1000 * 60 * 60 * 24,
-    // sameSite: "none", //todo: none when publish
+    // sameSite: "none", // todo: none when publish
   });
   res
     .status(200)
@@ -47,13 +49,15 @@ export const verificationComplete = async (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-  // to logout : invalidate the cookie auth_token
-  // when logout, user has to login again to enter into
+  /**
+   * to logout : invalidate the cookie auth_token
+   * when logout, user has to login again to enter into
+   */
   res.cookie("auth_token", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 0,
-    // sameSite: "none", //todo: none when publish
+    // sameSite: "none", // todo: none when publish
   });
   res.status(200).json({ message: "successfully logged out" });
 };

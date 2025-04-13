@@ -1,11 +1,11 @@
 import { useFormContext } from "react-hook-form";
-import { HotelFormData } from "./ManageHotelForm";
+import { HotelFormInput } from "./ManageHotelForm";
 
 const DetailsSection = () => {
   const {
     register,
     formState: { errors },
-  } = useFormContext<HotelFormData>();
+  } = useFormContext<HotelFormInput>();
   return (
     <div>
       <label className="flex flex-col">
@@ -13,7 +13,7 @@ const DetailsSection = () => {
         <input
           {...register("name", { required: "name is required" })}
           type="text"
-          className="border border-black"
+          className="px-2 border border-black"
         />
         {errors.name ? (
           <span className="text-red-500 italic">{errors.name.message}</span>
@@ -27,7 +27,7 @@ const DetailsSection = () => {
           <input
             {...register("city", { required: "city is required" })}
             type="text"
-            className="border border-black"
+            className="px-2 border border-black"
           />
           {errors.city ? (
             <span className="text-red-500 italic">{errors.city.message}</span>
@@ -40,7 +40,7 @@ const DetailsSection = () => {
           <input
             {...register("country", { required: "country is required" })}
             type="text"
-            className="border border-black"
+            className="px-2 border border-black"
           />
           {errors.country ? (
             <span className="text-red-500 italic">
@@ -55,7 +55,7 @@ const DetailsSection = () => {
         <span className="font-bold">Description</span>
         <textarea
           {...register("description", { required: "description is required" })}
-          className="border border-black"
+          className="p-2 border border-black"
           rows={5}
         ></textarea>
         {errors.description ? (
@@ -73,7 +73,7 @@ const DetailsSection = () => {
             required: "price per night is required",
           })}
           type="number"
-          className="border border-black"
+          className="px-2 border border-black"
         />
         {errors.pricePerNight ? (
           <span className="text-red-500 italic">
@@ -85,12 +85,13 @@ const DetailsSection = () => {
       </label>
       <label className="flex flex-col">
         <span className="font-bold">Star rating</span>
-        <select className="border border-black"
+        <select
+          className="p-2 border border-black"
           {...register("starRating", {
             required: "This field is a required field",
           })}
         >
-          <option value="">select star rating</option>
+          <option value="">Select star rating</option>
           {[1, 2, 3, 4, 5].map((rating) => (
             <option key={rating} value={rating}>
               {rating}

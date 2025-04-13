@@ -4,11 +4,13 @@ import jwt from "jsonwebtoken";
 import { UserType } from "../shared/types";
 
 export const signup = async (req: Request, res: Response) => {
-  // thanks to mongoose validation on schema level, required fields (firstName, lastName, email, password) are coming - done
-  // check if user already exists - done
-  // create a new account - done
-  // send token in cookie - done
   try {
+    /**
+     * thanks to mongoose validation on schema level, required fields (firstName, lastName, email, password) are coming - done
+     * check if user already exists - done
+     * create a new account - done
+     * send token in cookie - done
+     */
     const { firstName, lastName, email, password }: UserType = req.body;
     const userDoc = await UserModel.findOne({ email });
 
@@ -23,7 +25,7 @@ export const signup = async (req: Request, res: Response) => {
       email,
       password,
     });
-    await newUserDoc.save(); //pw will be hashed before saving to db thanks to pre('save') hook
+    await newUserDoc.save(); // pw will be hashed before saving to db thanks to pre('save') hook
 
     const token = jwt.sign(
       { userId: newUserDoc.id },

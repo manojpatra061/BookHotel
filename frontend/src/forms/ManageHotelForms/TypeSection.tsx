@@ -1,13 +1,13 @@
 import { useFormContext } from "react-hook-form";
 import { hotelTypes } from "../../config/hotel-options-config";
-import { HotelFormData } from "./ManageHotelForm";
+import { HotelFormInput } from "./ManageHotelForm";
 
 const TypeSection = () => {
   const {
     register,
     watch,
     formState: { errors },
-  } = useFormContext<HotelFormData>();
+  } = useFormContext<HotelFormInput>();
   let typeValue = watch("type");
   let styleForAll = "bg-gray-200 px-4 py-2 rounded-3xl";
   let styleForSelected = "bg-blue-400 px-4 py-2 rounded-3xl";
