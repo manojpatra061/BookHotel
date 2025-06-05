@@ -18,3 +18,7 @@ export interface HotelType {
   facilities: string[];
   imageUrls: string[];
 }
+
+export type SearchHotelFilterType = {
+  [K in keyof Partial<Omit<HotelType, "userId" | "imageUrls">>]: any;
+};

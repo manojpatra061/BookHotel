@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import Toast from "../components/Toast";
+import { Toast } from "@/components";
 import { useQuery } from "@tanstack/react-query";
 import * as apiClient from "../api-client";
 
@@ -7,14 +7,14 @@ export type ToastMessage = {
   message: string;
   type: "SUCCESS" | "ERROR";
 };
-type AppContext = {
+type AppContextType = {
   showToast: (toastMessage: ToastMessage) => void;
   isLoggedIn: boolean;
   isLogging: boolean; //to solve: shows 'you need to login' when already logged in at '/add-hotel'
   // for any other props
 };
 
-const AppContext = createContext<AppContext | undefined>(undefined);
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [toast, setToast] = useState<ToastMessage | undefined>(undefined);
@@ -51,7 +51,23 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useAppContext = () => {
   const context = useContext(AppContext);
-  return context as AppContext;
+
+  if (context) {
+    return context;
+  }
+
+  if (import.meta.env.MODE === "development") {
+    // ⚠️ Dev-only fallback to prevent crash during HMR or testing
+    const fallBackContext: AppContextType = {
+      isLoggedIn: false,
+      isLogging: false,
+      showToast: () => {},
+    };
+    return fallBackContext;
+  }
+
+  // ❌ In production, missing provider is a serious bug
+  throw new Error("AppContext must be used within its provider.");
 };
 
 export default AppContextProvider;

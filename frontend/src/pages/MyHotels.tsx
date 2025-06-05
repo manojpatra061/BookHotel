@@ -3,7 +3,8 @@ import * as apiClient from "../api-client";
 import { FaRegBuilding, FaStarHalfAlt } from "react-icons/fa";
 import { MdFamilyRestroom, MdOutlineFeaturedPlayList } from "react-icons/md";
 import { RiMoneyRupeeCircleFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { LinkButton } from "@/components";
 
 const MyHotels = () => {
   const { data: myHotels } = useQuery({
@@ -47,12 +48,12 @@ const MyHotels = () => {
               {hotel.starRating} star rating
             </div>
           </div>
-          <Link
-            to={`/edit-hotel/${hotel._id}`}
-            className="text-sm font-bold bg-blue-800 text-white w-fit p-2 self-end"
-          >
-            Edit Hotel
-          </Link>
+          <LinkButton
+            linkTo={`/edit-hotel/${hotel._id}`}
+            linkText="edit hotel"
+            linkType="success"
+            additionalClassName="self-end"
+          />
         </div>
       ))}
     </div>

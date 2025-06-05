@@ -1,9 +1,13 @@
 import multer from "multer";
 import { Request, Response } from "express";
-import { v2 as cloudinary } from "cloudinary";
 import HotelModel from "../models/hotel";
 import { HotelType } from "../shared/types";
 import { StatusCodes } from "http-status-codes";
+import {
+  constructSearchHotelFilter,
+  createSortOption,
+} from "../utils/dbHelpers";
+import { uploadImagesToCloudinary } from "../utils/cloudinaryHelpers";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -51,7 +55,9 @@ export const getAllMyHotels = async (req: Request, res: Response) => {
      */
     const userId = req.userId;
     const hotelDocs = await HotelModel.find({ userId });
-    res.status(StatusCodes.OK).json({ msg: "success", myHotels: hotelDocs });
+    res
+      .status(StatusCodes.OK)
+      .json({ msg: "success", total: hotelDocs.length, myHotels: hotelDocs });
   } catch (error) {
     res
       .status(StatusCodes.BAD_REQUEST)
@@ -138,25 +144,41 @@ export const updateHotel = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * @param images - an array of images to upload into Cloudinary
- * @returns - an array of image urls
- */
-const uploadImagesToCloudinary = async (
-  images: Express.Multer.File[]
-): Promise<string[]> => {
-  const uploadResponses = images.map((image) => {
-    const b64 = image.buffer.toString("base64");
-    const dataUri = `data:image/png;base64,${b64}`; // convert into base64 uri
+export const searchHotels = async (req: Request, res: Response) => {
+  try {
+    // getting the data from query parameter (page, sort, destination, maxPrice, adultCount, childCount, facilities, type, starRating) - done
+    // make filter object to find hotels - done
+    // find the hotels from 'hotels' collection - HotelModel.find(filterObj) - done
 
-    const uploadResponse = cloudinary.uploader.upload(dataUri, {
-      folder: "book-hotel",
+    let filterObj = constructSearchHotelFilter(req.query);
+
+    const sortOption = !req.query.sort
+      ? {}
+      : createSortOption(req.query.sort as string);
+
+    const currentPage = parseInt((req.query.page as string) || "1", 10);
+    const hotelsPerPage = 5;
+    const skip = (currentPage - 1) * hotelsPerPage;
+    const totalFound = await HotelModel.countDocuments(filterObj);
+    const totalPages = Math.ceil(totalFound / hotelsPerPage);
+
+    const hotelsDoc = await HotelModel.find(filterObj)
+      .sort(sortOption)
+      .limit(hotelsPerPage)
+      .skip(skip);
+    res.status(StatusCodes.OK).json({
+      msg: "success",
+      totalFound,
+      pagination: {
+        currentPage,
+        totalPages,
+        hotelsPerPage,
+      },
+      hotels: hotelsDoc,
     });
-    return uploadResponse;
-  });
-  const uploadedImages = await Promise.all(uploadResponses);
-  const uploadedImageUrls = uploadedImages.map(
-    (uploadedImage) => uploadedImage.secure_url
-  );
-  return uploadedImageUrls;
+  } catch (error) {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `error : ${(error as Error).message}` });
+  }
 };

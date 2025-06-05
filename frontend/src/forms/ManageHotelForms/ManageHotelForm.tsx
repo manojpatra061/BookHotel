@@ -1,3 +1,4 @@
+import { DevTool } from "@hookform/devtools";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   DetailsSection,
@@ -9,6 +10,7 @@ import {
 import { useEffect } from "react";
 import { HotelType } from "../../shared/types";
 import { useLocation } from "react-router-dom";
+import { Button } from "@/components";
 
 export type HotelFormInput = {
   _id: string;
@@ -80,14 +82,17 @@ const ManageHotelForm = ({
         <FacilitiesSection />
         <GuestsSection />
         <ImagesSection />
-        <button
+        <Button
           type="submit"
+          btnType="success"
+          btnText={isFormLoading ? loadingButtonText : idleButtonText}
           disabled={isFormLoading}
-          className="capitalize text-sm font-bold bg-blue-800 text-white w-fit p-2 self-end my-2 disabled:bg-gray-400"
-        >
-          {isFormLoading ? loadingButtonText : idleButtonText}
-        </button>
+          additionalClassName="my-2"
+        />
       </form>
+      {import.meta.env.MODE === "development" && (
+        <DevTool control={formMethods.control} />
+      )}
     </FormProvider>
   );
 };
@@ -123,8 +128,12 @@ const toFormData = (hotelFormInput: HotelFormInput): FormData => {
     formData.append("facilities", facility);
   });
 
-  const arrOfImageFiles = Array.from(hotelFormInput.images);
-  arrOfImageFiles.forEach((imageFile) => formData.append("images", imageFile));
+  if (hotelFormInput.images) {
+    const arrOfImageFiles = Array.from(hotelFormInput.images);
+    arrOfImageFiles.forEach((imageFile) =>
+      formData.append("images", imageFile)
+    );
+  }
 
   return formData;
 };

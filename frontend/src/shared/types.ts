@@ -13,3 +13,14 @@ export interface HotelType {
   facilities: string[];
   imageUrls: string[];
 }
+
+export type SearchResultType = {
+  msg: string;
+  totalFound: number;
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    hotelsPerPage: number;
+  };
+  hotels: HotelType[];
+};

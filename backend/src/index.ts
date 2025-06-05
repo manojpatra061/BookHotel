@@ -1,6 +1,12 @@
 import express, { Request, Response } from "express";
 import connectDB from "./db";
-import { authRoute, myHotelsRoute, testRoute, userRoute } from "./routes";
+import {
+  authRoute,
+  myHotelsRoute,
+  testRoute,
+  userRoute,
+  hotelsRoute,
+} from "./routes";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -23,13 +29,14 @@ app.use(
     origin: [process.env.FRONTEND_URL1 as string],
     credentials: true,
   })
-); //enable CORS for fronend url only
+); //enable CORS for frontend url only
 
 // api endpoints
 app.use("/api/test", testRoute);
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/my-hotels", myHotelsRoute);
+app.use("/api/hotels", hotelsRoute);
 
 // catch-all route for React Router
 app.get("*", (req: Request, res: Response) => {

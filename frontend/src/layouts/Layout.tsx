@@ -11,7 +11,9 @@ const Layout = ({ children }: Props) => {
       <Header />
       <Hero />
       <SearchBar />
-      <div className="flex-grow pt-9 pb-4 px-10 md:px-40">{children}</div>
+      <div className="px-10 md:px-40 pt-4 pb-4 grow">
+        <div className="container mx-auto">{children}</div>
+      </div>
       <Footer />
     </div>
   );

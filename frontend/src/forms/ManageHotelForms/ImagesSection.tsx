@@ -46,15 +46,17 @@ const ImagesSection = () => {
           </div>
         )}
         <input
+        className="border-2 border-dashed border-black p-2"
           type="file"
           multiple
           accept="image/*"
           {...register("images", {
             validate: (inputImages) => {
-              if (existingImageUrls.length + inputImages.length <= 0) {
+              const inputCount = inputImages ? inputImages.length : 0;
+              if (existingImageUrls.length + inputCount <= 0) {
                 return "At least one 1 image is required";
               }
-              if (existingImageUrls.length + inputImages.length > 5) {
+              if (existingImageUrls.length + inputCount > 5) {
                 return "Images cannot be more than 5";
               }
             },

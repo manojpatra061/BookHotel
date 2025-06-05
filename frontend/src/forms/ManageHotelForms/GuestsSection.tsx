@@ -16,7 +16,7 @@ const GuestsSection = () => {
           <label>Adults</label>
           <input
             type="number"
-            className="px-2"
+            className="px-2 border border-black"
             {...register("adultCount", {
               required: "This is a required field",
             })}
@@ -33,7 +33,7 @@ const GuestsSection = () => {
           <label>Children</label>
           <input
             type="number"
-            className="px-2"
+            className="px-2 border border-black"
             {...register("childCount", {
               required: "This is a required field",
             })}

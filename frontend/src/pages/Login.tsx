@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as apiClient from "../api-client";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
+import { Button } from "@/components";
 
 export type LoginFormInput = {
   email: string;
@@ -67,12 +68,13 @@ const Login = () => {
             placeholder="Password*"
           />
         </div>
-        <button
+        {/* <button
           className="w-40 font-bold text-lg bg-blue-800 text-white"
           type="submit"
         >
           login
-        </button>
+        </button> */}
+        <Button type="submit" btnType="success" btnText="login" />
       </form>
     </div>
   );

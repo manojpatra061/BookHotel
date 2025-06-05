@@ -1,18 +1,21 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   AddHotel,
+  Detail,
   EditHotel,
   Home,
   Login,
   MyHotels,
   NotFoundError,
   Register,
+  Search,
 } from "./pages";
 import Layout from "./layouts/Layout";
 import { useAppContext } from "./contexts/AppContext";
 
 function App() {
   const { isLoggedIn } = useAppContext();
+
   return (
     <BrowserRouter>
       <Routes>
@@ -41,11 +44,35 @@ function App() {
           }
         />
         <Route
+          path="/search"
+          element={
+            <Layout>
+              <Search />
+            </Layout>
+          }
+        />
+        <Route
+          path="/detail/:hotelId"
+          element={
+            <Layout>
+              <Detail />
+            </Layout>
+          }
+        />
+        <Route
           // catch all route for 404
           path="*"
           element={
             <Layout>
               <NotFoundError />
+            </Layout>
+          }
+        />
+        <Route
+          path="/test"
+          element={
+            <Layout>
+              <div>test</div>
             </Layout>
           }
         />

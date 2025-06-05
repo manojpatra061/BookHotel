@@ -1,8 +1,0 @@
-Reading this will help you visulalize how the app is working...
-References : 
-  We -> from developer's perspective
-  He (His, Him) -> the end user
-
-1. when a user opens our app by going to the website, we need to verify if the user is a valid user or not.
-  if yes - Home page with logout button. It should keep him logged in. Should show logout button
-  if no - Home page with login button.

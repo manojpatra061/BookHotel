@@ -3,6 +3,7 @@ import * as apiClient from "../api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppContext } from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components";
 
 export type RegisterFormInput = {
   firstName: string;
@@ -12,7 +13,7 @@ export type RegisterFormInput = {
   confirmPassword: string;
 };
 const Register = () => {
-  const queryClient = useQueryClient(); //to invalidate the query "verify-token" so it refetches
+  const queryClient = useQueryClient(); // to invalidate the query "verify-token" so it refetches
   const { showToast } = useAppContext();
   const navigate = useNavigate();
 
@@ -129,12 +130,7 @@ const Register = () => {
           />
         </div>
 
-        <button
-          className="w-40 font-bold text-lg bg-blue-800 text-white"
-          type="submit"
-        >
-          create account
-        </button>
+        <Button type="submit" btnType="success" btnText="create account" />
       </form>
     </div>
   );
